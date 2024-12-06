@@ -1,0 +1,14 @@
+# Diretórios do Node.js
+node_modules
+
+# Build outputs
+dist
+
+# Variáveis de configuração do VSCode
+.vscode
+
+# Logs
+*.log
+
+# Sistema Mac
+.DS_Store
