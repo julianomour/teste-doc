@@ -23,7 +23,6 @@ export class NFeFactory implements NFe {
         this.dataEmissao = new DataEmissao();
         this.description = [];
     }
-    x: any;
 
     setEmissor(pessoa: { nome: string, cnpj: string, endereco: Endereco }) {
         this.emissor.nome = pessoa.nome;
@@ -64,19 +63,6 @@ export class NFeFactory implements NFe {
         this.itens.push(document_item)
         this.total.valor += document_item.subtotal;
         return this;
-    }
-
-    getDocumentoFiscal() {
-        return {
-            tipo: this.tipo,
-            emissor: this.emissor,
-            destinatario: this.destinatario,
-            itens: this.itens,
-            impostos: this.impostos,
-            total: this.total,
-            dataEmissao: this.dataEmissao,
-            description: this.description,
-        };
     }
 
     validate() {
