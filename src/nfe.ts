@@ -31,10 +31,9 @@ export class NFeFactory implements NFe {
 
         this.emissor.validateError(
             { property: this.emissor.nome, name: "Nome do Emissor" },
-        )
-        this.emissor.validateError(
             { property: this.emissor.cnpj, name: "CNPJ do Emissor" },
         )
+
         return this;
     }
 
