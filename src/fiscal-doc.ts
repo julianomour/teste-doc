@@ -106,8 +106,6 @@ export class NfeFactory implements DocumentFactory {
         this.total = new Total();
         this.dataEmissao = new DataEmissao();
         this.description = [];
-
-        console.log(this)
     }
 
     setEmissor(pessoa: { nome: string, cnpj: string }) {
