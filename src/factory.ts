@@ -1,13 +1,13 @@
 // import { NFeBuilder, } from './document';
-import { NfeFactory } from './fiscal-doc';
+import { NFe } from './fiscal-doc';
+import { NFeFactory } from './nfe';
 
-export class DocumentoFiscalFactory {
-    static CriarFactory(tipo) {
-        switch (tipo) {
-            case "NF-e":
-                return new NfeFactory();
-            default:
-                throw new Error(`Tipo de documento fiscal desconhecido: ${tipo}`);
-        }
+export interface DocumentoFiscalFactory {
+    criarNFe(): NFe;
+}
+
+export class DocumentoFiscalConcretaFactory implements DocumentoFiscalFactory {
+    criarNFe(): NFe {
+        return new NFeFactory();
     }
 }
