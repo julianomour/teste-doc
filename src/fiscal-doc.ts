@@ -24,6 +24,36 @@ class Validation {
         });
     }
 
+
+    requireOneOf(properties: { property: any; name: string }[]): void {
+        const has_some_property = properties.some(
+            ({ property }) => property && (!Array.isArray(property) || property.length > 0)
+        );
+
+        if (!has_some_property) {
+            const props = properties.map(({ name }) => name).join(" ou ");
+            this.validations.push({
+                status: "error",
+                description: `At least one (${props}) is required.`,
+            });
+        }
+    }
+
+    recommendOneOf(properties: { property: any; name: string }[]): void {
+        const has_some_property = properties.some(
+            ({ property }) => property && (!Array.isArray(property) || property.length > 0)
+        );
+
+        if (!has_some_property) {
+            const props = properties.map(({ name }) => name).join(" ou ");
+            this.validations.push({
+                status: "warning",
+                description: `is Recommended at least one (${props}).`,
+            });
+        }
+    }
+
+
     getValidationMessages() {
         return this.validations.reduce(
             (acc, v) => {
@@ -55,7 +85,6 @@ export class Pessoa extends Validation {
     cnpj: string;
     endereco: Endereco;
 
-
     constructor() {
         super();
         this.endereco = new Endereco();
@@ -66,6 +95,12 @@ export class Endereco {
     logradouro: string;
     bairro: string;
     cidade: string;
+    codigo: string
+
+
+    isAforeignAddress(): boolean {
+        return this.codigo === '1058';
+    }
 }
 
 export class Item {
@@ -73,6 +108,8 @@ export class Item {
     quantidade: number;
     valorUnitario: number;
     subtotal: number;
+    numero_documento: string
+
 }
 
 export class Impostos {
@@ -111,6 +148,24 @@ export interface NFe extends DocumentoFiscal {
 
     setEmissor(pessoa: { nome: string, cnpj: string, endereco: Endereco }): void;
     setDestinatario(pessoa: { nome: string, cnpj: string }): void;
+    setImpostos(impostos: Record<string, number>): void;
+    setTotal(total: number): void;
+    addItem(descricao: string, quantidade: number, valorUnitario: number)
+}
+
+
+export interface NFse extends DocumentoFiscal {
+    tipo: TipoDocumento;
+    emissor: Pessoa;
+    destinatario: Pessoa;
+    itens: Item[];
+    impostos: Impostos;
+    total: Total;
+    dataEmissao: DataEmissao;
+    description: string[];
+
+    setEmissor(pessoa: { cnpj: string, endereco: Endereco }): void;
+    setDestinatario(pessoa: { cnpj: string }): void;
     setImpostos(impostos: Record<string, number>): void;
     setTotal(total: number): void;
     addItem(descricao: string, quantidade: number, valorUnitario: number)

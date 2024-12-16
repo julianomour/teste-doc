@@ -29,12 +29,22 @@ export class NFeFactory implements NFe {
         this.emissor.cnpj = pessoa.cnpj;
         this.emissor.endereco = pessoa.endereco;
 
-        this.emissor.validateError(
-            { property: this.emissor.nome, name: "Nome do Emissor" },
-            { property: this.emissor.cnpj, name: "CNPJ do Emissor" },
-        )
-
+        this.validateEmissor(this.emissor);
         return this;
+    }
+
+    validateEmissor(pessoa: Pessoa) {
+
+        if (pessoa.endereco.isAforeignAddress()) {
+            pessoa.validateError(
+                { property: pessoa.nome, name: "Nome do Destinatário" },
+            )
+        } else {
+            pessoa.requireOneOf([
+                { property: pessoa.nome, name: "Nome do Destinatário" },
+                { property: pessoa.cnpj, name: "CNPJ do Destinatário" },
+            ])
+        }
     }
 
     setDestinatario(pessoa: { nome: string, cnpj: string }) {
@@ -42,6 +52,7 @@ export class NFeFactory implements NFe {
         this.destinatario.cnpj = pessoa.cnpj;
         return this;
     }
+
     setImpostos(impostos: Record<string, number>) {
         this.impostos.valores = impostos;
         return this;
@@ -77,7 +88,7 @@ export class NFeFactory implements NFe {
             impostos: this.impostos,
             total: this.total,
             dataEmissao: this.dataEmissao,
-            description: this.description,
+            description: this.description
         };
     }
 }
